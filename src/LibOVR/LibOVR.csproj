@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net40</TargetFrameworks>
+    <TargetFrameworks>net4.8.1</TargetFrameworks>
     <EnableDefaultItems>false</EnableDefaultItems>
     <RootNamespace>nkast.LibOVR</RootNamespace>
     <AssemblyName>nkast.LibOVR</AssemblyName>
@@ -65,19 +65,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\LibOvr.Native\bin\Debug\x64\nkast.LibOVR.Native.dll" Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'"
-                  Pack="true" PackagePath="runtimes\win-x64\native">
+    <Content Include="..\LibOvr.Native\bin\Debug\x64\nkast.LibOVR.Native.dll" Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'" Pack="true" PackagePath="runtimes\win-x64\native">
       <Link>nkast.LibOVR.Native.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\LibOVR.Native\bin\Release\x64\nkast.LibOVR.Native.dll" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'"
-                  Pack="true" PackagePath="runtimes\win-x64\native">
+    <Content Include="..\LibOVR.Native\bin\Release\x64\nkast.LibOVR.Native.dll" Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'" Pack="true" PackagePath="runtimes\win-x64\native">
       <Link>nkast.LibOVR.Native.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
         
-    <Content Include="nkast.LibOVR.targets" 
-                  Pack="true" PackagePath="build"  />
+    <Content Include="nkast.LibOVR.targets" Pack="true" PackagePath="build" />
   </ItemGroup>
 
 </Project>

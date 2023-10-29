@@ -1,4 +1,4 @@
-# LibOVR: A Wrapper for Oculus PCVR SDK v32
+# LibOVR: A Wrapper for Oculus PCVR SDK
 
 Welcome to LibOVR! This library serves as a wrapper for the Oculus PCVR SDK, providing a managed way to interact with Oculus VR functionalities. It simplifies the process of developing VR applications, allowing developers to focus on creating immersive experiences without getting bogged down by the complexities of the native SDK.
 

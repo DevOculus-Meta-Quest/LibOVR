@@ -1,78 +1,93 @@
-### [OvrClient.cs](https://github.com/DevOculus-Meta-Quest/LibOVR/blob/main/src/LibOVR/OvrClient.cs)
-- **Class `OvrClient`**: Manages the lifecycle of the Oculus VR session.
-  - **Methods**:
-    - `Detect(int timeoutMilliseconds)`: Detects if OVR service is running.
-    - `TryInitialize(out OvrClient ovrClient)`: Tries to initialize the OVR client.
-    - `TryCreateSession(out OvrSession ovrSession)`: Tries to create a new OVR session.
+# LibOVR: A Wrapper for Oculus PCVR SDK v32
 
-### [OvrSession.cs](https://github.com/DevOculus-Meta-Quest/LibOVR/blob/main/src/LibOVR/OvrSession.cs)
-- **Class `OvrSession`**: Represents a session of the OVR client.
-  - **Methods**:
-    - `GetHmdDesc()`: Gets the description of the HMD.
-    - `GetFovTextureSize(OvrEyeType eye, OvrFovPort fov, float pixelsPerDisplayPixel)`: Gets the texture size based on FOV.
-    - `CreateTextureSwapChainDX(IntPtr dxDevice, OvrTextureSwapChainDesc desc, out OvrTextureSwapChain textureSwapChain)`: Creates a texture swap chain for DirectX.
+Welcome to LibOVR! This library serves as a wrapper for the Oculus PCVR SDK, providing a managed way to interact with Oculus VR functionalities. It simplifies the process of developing VR applications, allowing developers to focus on creating immersive experiences without getting bogged down by the complexities of the native SDK.
 
-### [OvrTrackingState.cs](https://github.com/DevOculus-Meta-Quest/LibOVR/blob/main/src/LibOVR/OvrTrackingState.cs)
-- **Struct `OvrTrackingState`**: Contains tracking state information.
-  - **Properties**:
-    - `HeadPose`: Pose of the head.
-    - `StatusFlags`: Status flags related to tracking.
+## Table of Contents
+1. [Introduction](#introduction)
+2. [Features](#features)
+3. [Getting Started](#getting-started)
+4. [Examples](#examples)
+5. [Conclusion](#conclusion)
+6. [Support and Contribution](#support-and-contribution)
 
-### [Native.cs](https://github.com/DevOculus-Meta-Quest/LibOVR/blob/main/src/LibOVR/Native.cs)
-- **Class `Native`**: Contains PInvoke signatures to interact with the native OVR library.
-  - **Methods**:
-    - Various methods for interacting directly with the OVR native library such as `ovr_CreateTextureSwapChainDX`, `ovr_GetTrackingState`, etc.
+## Introduction
 
-### [OvrControllerType.cs](https://github.com/DevOculus-Meta-Quest/LibOVR/blob/main/src/LibOVR/OvrControllerType.cs)
-- **Enum `OvrControllerType`**: Enumerates different types of controllers like LTouch, RTouch, XBox, etc.
+LibOVR aims to make Oculus VR development smoother and more accessible. It encapsulates various functionalities such as initialization, session management, tracking, input handling, and rendering, providing a comprehensive interface for VR application development.
 
-### [OvrInputState.cs](https://github.com/DevOculus-Meta-Quest/LibOVR/blob/main/src/LibOVR/OvrInputState.cs)
-- **Struct `OvrInputState`**: Contains the state of the input devices.
-  - **Properties**:
-    - `TimeInSeconds`: Time when the input was captured.
-    - `Buttons`: Button states.
-    - `Touches`: Touch states.
+## Features
 
----
+- **Initialization and Session Management**: Easily initialize the OVR client and manage VR sessions.
+- **Tracking**: Obtain detailed tracking information for implementing immersive experiences.
+- **Input Handling**: Handle inputs from various controllers efficiently.
+- **Rendering**: Manage texture swap chains for rendering VR content.
 
-### How to Use the Wrapper
-1. **Initialization**
-   - Initialize the OVR client using `OvrClient.TryInitialize(out OvrClient ovrClient)`.
-   - Create a session using `ovrClient.TryCreateSession(out OvrSession ovrSession)`.
+## Getting Started
 
-2. **Session Management**
-   - Get HMD description using `ovrSession.GetHmdDesc()`.
-   - Manage the lifecycle of the session, ensuring to dispose of it properly.
+Before diving into the examples, ensure that you have properly set up your development environment and have a basic understanding of Oculus VR development.
 
-3. **Tracking**
-   - Get tracking state using `ovrSession.GetTrackingState(double absTime, OvrBool latencyMarker)`.
+## Examples
 
-4. **Input Handling**
-   - Get input states using `ovrSession.GetInputState(OvrControllerType controllerType, out OvrInputState inputState)`.
+### 1. **Initializing the OVR Client and Creating a Session**
 
-5. **Rendering**
-   - Manage texture swap chains for rendering, creating them using `ovrSession.CreateTextureSwapChainDX`.
+```csharp
+OvrClient ovrClient;
+if (OvrClient.TryInitialize(out ovrClient))
+{
+    OvrSession ovrSession;
+    if (ovrClient.TryCreateSession(out ovrSession))
+    {
+        // Your code here
+    }
+}
+```
 
-### Examples
-- **Initializing the OVR Client and Creating a Session**
-  ```csharp
-  OvrClient ovrClient;
-  OvrClient.TryInitialize(out ovrClient);
-  OvrSession ovrSession;
-  ovrClient.TryCreateSession(out ovrSession);
-  ```
+### 2. **Getting Tracking State**
 
-- **Getting Tracking State**
-  ```csharp
-  double absTime = ...; // specify the absolute time
-  OvrTrackingState trackingState = ovrSession.GetTrackingState(absTime, OvrBool.False);
-  ```
+```csharp
+double absTime = ...; // specify the absolute time
+OvrTrackingState trackingState = ovrSession.GetTrackingState(absTime, OvrBool.False);
 
-- **Handling Input**
-  ```csharp
-  OvrInputState inputState;
-  ovrSession.GetInputState(OvrControllerType.Touch, out inputState);
-  ```
+// Accessing head pose
+OvrPosef headPose = trackingState.HeadPose;
+```
 
-### Conclusion
-The LibOVR wrapper provides a managed way to interact with the Oculus PCVR SDK v32. It allows for initialization, session management, tracking, input handling, and rendering functionalities, making it easier to develop VR applications using the Oculus SDK.
+### 3. **Handling Input**
+
+```csharp
+OvrInputState inputState;
+if (ovrSession.GetInputState(OvrControllerType.Touch, out inputState))
+{
+    // Check if a button is pressed
+    if ((inputState.Buttons & OvrButton.A) != 0)
+    {
+        // Button A is pressed
+    }
+}
+```
+
+### 4. **Managing Texture Swap Chains**
+
+```csharp
+OvrTextureSwapChainDesc desc = new OvrTextureSwapChainDesc
+{
+    Type = OvrTextureType._2D,
+    Format = OvrTextureFormat.R8G8B8A8_UNORM_SRGB,
+    ArraySize = 1,
+    Width = 1024,
+    Height = 1024,
+    MipLevels = 1,
+    SampleCount = 1,
+    StaticImage = OvrBool.False,
+};
+
+OvrTextureSwapChain textureSwapChain;
+ovrSession.CreateTextureSwapChainDX(dxDevice, desc, out textureSwapChain);
+```
+
+## Conclusion
+
+LibOVR is a powerful wrapper that simplifies Oculus VR development, allowing you to focus on creating immersive and engaging VR experiences. Explore the various functionalities, and don’t hesitate to dive into the code to understand the intricacies and unleash the full potential of this library.
+
+## Support and Contribution
+
+Feel free to contribute, report issues, or make suggestions by visiting the [GitHub repository](https://github.com/DevOculus-Meta-Quest/LibOVR). Your feedback is highly appreciated!

@@ -1,5 +1,5 @@
 ﻿#region License
-//   Copyright 2022 Kastellanos Nikolaos
+//   Copyright 2023 Eliminater74
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 using System;
 using System.Runtime.InteropServices;
-using System.Collections.Generic;
 
 namespace nkast.LibOVR
 {
@@ -36,6 +35,18 @@ namespace nkast.LibOVR
         public OvrFixedArray2<float> IndexTriggerRaw;
         public OvrFixedArray2<float> HandTriggerRaw;
         public OvrFixedArray2<OvrVector2f> ThumbstickRaw;
+
+        // Method to check if CustomAction1 is pressed
+        public bool IsCustomAction1Pressed()
+        {
+            return (Buttons & OvrButton.CustomAction1) == OvrButton.CustomAction1;
+        }
+
+        // Method to check if CustomAction2 is pressed
+        public bool IsCustomAction2Pressed()
+        {
+            return (Buttons & OvrButton.CustomAction2) == OvrButton.CustomAction2;
+        }
 
         public override string ToString()
         {

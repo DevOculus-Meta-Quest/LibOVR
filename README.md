@@ -97,6 +97,70 @@ OvrTextureSwapChain textureSwapChain;
 ovrSession.CreateTextureSwapChainDX(dxDevice, desc, out textureSwapChain);
 ```
 
+### Example 5: Session Status Checking
+This example demonstrates how to check the status of the VR session, which is important for ensuring that the application responds correctly to changes in the VR environment.
+
+```csharp
+OvrSessionStatus sessionStatus;
+ovrSession.GetSessionStatus(out sessionStatus);
+
+if (sessionStatus.ShouldQuit)
+{
+    // Handle session quit request
+}
+if (sessionStatus.ShouldRecenter)
+{
+    // Handle recentering request
+}
+if (sessionStatus.IsVisible)
+{
+    // Session is visible and can proceed with rendering
+}
+```
+
+### Example 6: Eye Rendering Information
+This snippet shows how to obtain eye rendering information, which is crucial for rendering VR content correctly for each eye.
+
+```csharp
+OvrEyeRenderDesc[] eyeRenderDescs = new OvrEyeRenderDesc[2];
+eyeRenderDescs[0] = ovrSession.GetRenderDesc(OvrEyeType.Left, ovrSession.DefaultEyeFov[0]);
+eyeRenderDescs[1] = ovrSession.GetRenderDesc(OvrEyeType.Right, ovrSession.DefaultEyeFov[1]);
+
+// Use eyeRenderDescs for rendering setup
+```
+
+### Example 7: Frame Submission
+Here's an example of how to submit a frame for rendering, a key step in the VR rendering loop.
+
+```csharp
+OvrLayerEyeFov layer = new OvrLayerEyeFov();
+layer.Header.Type = OvrLayerType.EyeFov;
+layer.Header.Flags = OvrLayerFlags.None;
+
+// Set up layer parameters, textures, and viewports for each eye
+// ...
+
+ovrSession.SubmitFrame(0, IntPtr.Zero, ref layer);
+```
+
+### Example 8: Handling Controller Input
+This example demonstrates how to handle input from Oculus Touch controllers, an essential part of creating interactive VR experiences.
+
+```csharp
+OvrInputState touchState;
+if (ovrSession.GetInputState(OvrControllerType.Touch, out touchState))
+{
+    if ((touchState.Buttons & OvrButton.One) != 0)
+    {
+        // Handle button one press
+    }
+    if ((touchState.Touches & OvrTouch.LIndexTrigger) != 0)
+    {
+        // Handle index trigger touch
+    }
+}
+```
+
 ## 🌌 Conclusion
 
 LibOVR empowers you to create next-generation VR experiences with ease. Dive into its functionalities, explore its capabilities, and contribute to its evolution!
